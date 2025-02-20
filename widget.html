@@ -1,83 +1,118 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbeitszeiterfassung</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 2px; background: transparent; }
+        table { width: 80%; margin: 10px auto; border-collapse: collapse; background: rgba(255, 255, 255, 0.9); border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        th, td { padding: 5px; text-align: center; }
+        th { background: black; color: white; }
+        button { padding: 5px 10px; font-size: 12px; border: none; border-radius: 15px; background: linear-gradient(145deg, #6ee7b7, #3b82f6); color: white; cursor: pointer; }
+        button:hover { background: linear-gradient(145deg, #3b82f6, #6ee7b7); }
+        button:disabled { background: gray; cursor: not-allowed; }
+        .reset-btn { width: 25px; height: 25px; border-radius: 50%; background: lightgreen; border: none; font-weight: bold; cursor: pointer; }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="de"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Arbeitszeiterfassung&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body { font-family: Arial, sans-serif; text-align: center; padding: 10px; background: #f4f4f4; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>table { width: 90%; margin: 20px auto; border-collapse: collapse; background: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>th, td { padding: 10px; border: 1px solid #ddd; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>th { background: black; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>button { padding: 8px 12px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.start { background: green; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.pause { background: orange; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.end { background: red; color: white; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.reset { background: lightgreen; color: white; border-radius: 50%; padding: 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;th&gt;Name&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;th&gt;Start&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;th&gt;Pause&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;th&gt;Pause Off&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;th&gt;Ende&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tbody id="table-body"&gt;&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/table&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const employees = ["Morris", "Jojo", "Jan", "Piet", "Philly", "Darija"];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let records = JSON.parse(localStorage.getItem("workRecords")) || {};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function getCurrentTime() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return new Date().toLocaleTimeString();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateTable() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const tableBody = document.getElementById("table-body");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>tableBody.innerHTML = "";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>employees.forEach(name =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let userData = records[name] || {};</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tableBody.innerHTML += `</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td&gt;${name}&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td&gt;&lt;button class="start" onclick="recordTime('${name}', 'start')"&gt;Start&lt;/button&gt;&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td&gt;&lt;button class="pause" onclick="recordTime('${name}', 'pause')"&gt;Pause&lt;/button&gt;&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td&gt;&lt;button class="pause" onclick="recordTime('${name}', 'pauseOff')"&gt;Pause Off&lt;/button&gt;&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td&gt;&lt;button class="end" onclick="recordTime('${name}', 'end')"&gt;Ende&lt;/button&gt;&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function recordTime(name, action) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!records[name]) records[name] = {};</p>
-<p class="p1"><span class="Apple-converted-space">            </span>records[name][action] = getCurrentTime();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>localStorage.setItem("workRecords", JSON.stringify(records));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>updateTable();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateTable();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <table>
+        <tr>
+            <th>Datum</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Aktion</th>
+        </tr>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxnCZ_fEq1jRfoUULzFlpYqbk8UhmAj3neY3TRoZNDg5marLZSgZffudvI-EsTii-qz/exec";
+        const names = ["Morris", "Jojo", "Jan", "Piet", "Philly", "Darija"];
+        let records = JSON.parse(localStorage.getItem("workRecords")) || {};
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString();
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = "";
+
+            names.forEach(name => {
+                let date = new Date().toLocaleDateString();
+                let userData = records[name] || { status: "Start" };
+
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${name}</td>
+                        <td>${userData.status}</td>
+                        <td>${userData.status !== "Danke für den Tag" ? 
+                            `<button onclick="handleAction('${name}')">${userData.status}</button>` : 
+                            `<button class="reset-btn" onclick="resetUser('${name}')">⟳</button>`}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveRecords(name, action) {
+            let datum = new Date().toLocaleDateString();
+            let uhrzeit = getCurrentTime();
+            let data = { datum, name, aktion: action, uhrzeit };
+
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            }).then(response => response.text())
+              .then(result => console.log(result))
+              .catch(error => console.error("Fehler:", error));
+        }
+
+        function handleAction(name) {
+            let code = prompt("Bitte gib deinen 3-stelligen Code ein:");
+            if (!code || code !== getCodeForUser(name)) return alert("Falscher Code!");
+
+            let userData = records[name] || { status: "Start" };
+
+            switch (userData.status) {
+                case "Start":
+                    userData.status = "Pause";
+                    saveRecords(name, "Start");
+                    break;
+                case "Pause":
+                    userData.status = "Pause Off";
+                    saveRecords(name, "Pause On");
+                    break;
+                case "Pause Off":
+                    userData.status = "Ende";
+                    saveRecords(name, "Pause Off");
+                    break;
+                case "Ende":
+                    userData.status = "Danke für den Tag";
+                    saveRecords(name, "Ende");
+                    break;
+            }
+
+            records[name] = userData;
+            localStorage.setItem("workRecords", JSON.stringify(records));
+            updateTable();
+        }
+
+        function resetUser(name) {
+            records[name] = { status: "Start" };
+            localStorage.setItem("workRecords", JSON.stringify(records));
+            updateTable();
+        }
+
+        function getCodeForUser(name) {
+            let index = names.indexOf(name);
+            return index !== -1 ? (index + 1).toString().repeat(3) : null;
+        }
+
+        updateTable();
+    </script>
 </body>
 </html>
